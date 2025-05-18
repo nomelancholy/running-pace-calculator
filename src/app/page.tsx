@@ -60,14 +60,14 @@ export default function Home() {
             <span className="inline-block w-2 h-2 bg-blue-400 rounded-full" />{" "}
             2. 목표 완주 시간 입력
           </h3>
-          <div className="flex flex-col sm:flex-row gap-2 items-center">
+          <div className="flex flex-row flex-wrap gap-1 sm:gap-2 items-center">
             <input
               type="number"
               min={0}
               max={23}
               value={displayValue(goalHour)}
               onChange={(e) => setGoalHour(Number(e.target.value) || 0)}
-              className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              className="w-12 sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition shrink-0"
               placeholder="시"
             />
             <span className="text-sm text-gray-500">시간</span>
@@ -77,7 +77,7 @@ export default function Home() {
               max={59}
               value={displayValue(goalMin)}
               onChange={(e) => setGoalMin(Number(e.target.value) || 0)}
-              className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              className="w-12 sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition shrink-0"
               placeholder="분"
             />
             <span className="text-sm text-gray-500">분</span>
@@ -87,7 +87,7 @@ export default function Home() {
               max={59}
               value={displayValue(goalSec)}
               onChange={(e) => setGoalSec(Number(e.target.value) || 0)}
-              className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              className="w-12 sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition shrink-0"
               placeholder="초"
             />
             <span className="text-sm text-gray-500">초</span>
