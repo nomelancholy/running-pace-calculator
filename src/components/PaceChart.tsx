@@ -12,6 +12,25 @@ function secondsToPace(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function getMinMaxPace(
+  sections: PaceSection[],
+  defaultPace: { min: number; sec: number },
+  totalDistance: number
+) {
+  // 모든 구간의 페이스(초) 배열
+  const paces: number[] = [];
+  for (let km = 0; km <= totalDistance; km += 0.5) {
+    const section = sections.find((s) => km >= s.from && km < s.to);
+    const pace = section
+      ? paceToSeconds(section.min, section.sec)
+      : paceToSeconds(defaultPace.min, defaultPace.sec);
+    paces.push(pace);
+  }
+  const min = Math.min(...paces);
+  const max = Math.max(...paces);
+  return { min, max };
+}
+
 interface PaceChartProps {
   sections: PaceSection[];
   totalDistance: number;
@@ -26,12 +45,22 @@ export default function PaceChart({
   // 0.5km 단위로 데이터 생성
   const points: { x: number; y: number }[] = [];
   for (let km = 0; km <= totalDistance; km += 0.5) {
-    // 해당 km에 적용되는 페이스 찾기
     const section = sections.find((s) => km >= s.from && km < s.to);
     const pace = section
       ? paceToSeconds(section.min, section.sec)
       : paceToSeconds(defaultPace.min, defaultPace.sec);
     points.push({ x: Number(km.toFixed(2)), y: pace });
+  }
+
+  // min/max pace 계산 (초)
+  const { min, max } = getMinMaxPace(sections, defaultPace, totalDistance);
+  // 1분씩 여유, 10초 단위로 라운딩
+  const yMin = Math.floor((min - 60) / 10) * 10;
+  const yMax = Math.ceil((max + 60) / 10) * 10;
+  // y축 tick 값 생성 (10초 단위)
+  const ticks: number[] = [];
+  for (let t = yMin; t <= yMax; t += 10) {
+    ticks.push(t);
   }
 
   const data = [
@@ -47,7 +76,7 @@ export default function PaceChart({
         data={data}
         margin={{ top: 30, right: 40, bottom: 50, left: 60 }}
         xScale={{ type: "linear", min: 0, max: totalDistance }}
-        yScale={{ type: "linear", min: "auto", max: "auto", reverse: true }}
+        yScale={{ type: "linear", min: yMin, max: yMax, reverse: false }}
         axisBottom={{
           legend: "거리 (km)",
           legendOffset: 36,
@@ -58,6 +87,7 @@ export default function PaceChart({
           legendOffset: -50,
           legendPosition: "middle",
           format: (v) => secondsToPace(Number(v)),
+          tickValues: ticks,
         }}
         pointSize={8}
         pointColor={{ theme: "background" }}
