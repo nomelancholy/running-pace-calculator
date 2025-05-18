@@ -50,10 +50,13 @@ export default function PaceInput({
   };
 
   return (
-    <div className="space-y-2 mb-4">
+    <div className="space-y-3 mb-4">
       {sections.map((section, idx) => (
-        <div key={idx} className="flex items-center gap-2">
-          <span>{idx + 1}.</span>
+        <div
+          key={idx}
+          className="flex flex-wrap items-center gap-2 bg-gray-50 rounded-lg px-3 py-2"
+        >
+          <span className="text-sm text-gray-500">{idx + 1}.</span>
           <input
             type="number"
             min={0}
@@ -62,7 +65,7 @@ export default function PaceInput({
             onChange={(e) =>
               handleSectionChange(idx, "from", Number(e.target.value))
             }
-            className="w-16 border rounded px-1 py-0.5"
+            className="w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
           ~
           <input
@@ -73,9 +76,9 @@ export default function PaceInput({
             onChange={(e) =>
               handleSectionChange(idx, "to", Number(e.target.value))
             }
-            className="w-16 border rounded px-1 py-0.5"
+            className="w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
-          km :
+          <span className="text-sm text-gray-500">km :</span>
           <input
             type="number"
             min={0}
@@ -84,9 +87,9 @@ export default function PaceInput({
             onChange={(e) =>
               handleSectionChange(idx, "min", Number(e.target.value))
             }
-            className="w-12 border rounded px-1 py-0.5"
+            className="w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
-          분
+          <span className="text-sm text-gray-500">분</span>
           <input
             type="number"
             min={0}
@@ -95,13 +98,13 @@ export default function PaceInput({
             onChange={(e) =>
               handleSectionChange(idx, "sec", Number(e.target.value))
             }
-            className="w-12 border rounded px-1 py-0.5"
+            className="w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
-          초
+          <span className="text-sm text-gray-500">초</span>
           <button
             type="button"
             onClick={() => handleRemoveSection(idx)}
-            className="text-red-500 ml-2"
+            className="ml-2 text-xs bg-red-100 text-red-600 rounded px-2 py-1 hover:bg-red-200 transition"
           >
             삭제
           </button>
@@ -110,7 +113,7 @@ export default function PaceInput({
       <button
         type="button"
         onClick={handleAddSection}
-        className="bg-blue-500 text-white px-2 py-1 rounded"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow transition"
       >
         구간 추가
       </button>
