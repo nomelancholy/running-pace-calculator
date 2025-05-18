@@ -93,7 +93,7 @@ export default function PaceChart({
         pointColor={{ theme: "background" }}
         pointBorderWidth={2}
         pointBorderColor={{ from: "serieColor" }}
-        enableArea={true}
+        enableArea={false}
         useMesh={true}
         colors={["#2563eb"]}
         curve="stepAfter"
