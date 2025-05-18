@@ -1,103 +1,62 @@
-import Image from "next/image";
+"use client";
+import React, { useState } from "react";
+import DistanceSelector from "@/components/DistanceSelector";
+import PaceInput, { PaceSection } from "@/components/PaceInput";
+import Result from "@/components/Result";
+import PaceChart from "@/components/PaceChart";
+
+const DEFAULT_PACE = { min: 6, sec: 0 };
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [distance, setDistance] = useState<number>(10);
+  const [sections, setSections] = useState<PaceSection[]>([
+    { from: 0, to: 3, min: 6, sec: 30 },
+    { from: 3, to: 5, min: 6, sec: 0 },
+  ]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // 거리 변경 시 구간 초기화
+  const handleDistanceChange = (d: number) => {
+    setDistance(d);
+    setSections([]);
+  };
+
+  return (
+    <div className="max-w-xl mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        러닝 페이스 계산기
+      </h1>
+      <section className="mb-6">
+        <h2 className="font-semibold mb-2">1. 목표 거리 선택</h2>
+        <DistanceSelector value={distance} onChange={handleDistanceChange} />
+      </section>
+      <section className="mb-6">
+        <h2 className="font-semibold mb-2">2. 구간별 목표 페이스 입력</h2>
+        <PaceInput
+          sections={sections}
+          onChange={setSections}
+          totalDistance={distance}
+          defaultPace={DEFAULT_PACE}
+        />
+        <div className="text-xs text-gray-500">
+          선택하지 않은 구간은 기본값 6:00 페이스로 계산됩니다.
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+      <section className="mb-6">
+        <h2 className="font-semibold mb-2">3. 예상 완주 기록</h2>
+        <Result
+          sections={sections}
+          totalDistance={distance}
+          defaultPace={DEFAULT_PACE}
+        />
+      </section>
+      <section>
+        <h2 className="font-semibold mb-2">4. 페이스 변화 시각화</h2>
+        <PaceChart
+          sections={sections}
+          totalDistance={distance}
+          defaultPace={DEFAULT_PACE}
+        />
+      </section>
     </div>
   );
 }
