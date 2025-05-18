@@ -59,7 +59,10 @@ export default function PaceInput({
           key={idx}
           className="flex flex-col sm:flex-row flex-wrap items-center gap-2 bg-gray-50 rounded-lg px-3 py-2"
         >
-          <span className="text-sm text-gray-500">{idx + 1}.</span>
+          {/* 넘버링: 모바일에서는 숨김, sm 이상에서만 표시 */}
+          <span className="text-sm text-gray-500 hidden sm:inline">
+            {idx + 1}.
+          </span>
           <div className="flex flex-row w-full sm:w-auto gap-2 items-center">
             <input
               type="number"
@@ -84,33 +87,45 @@ export default function PaceInput({
             />
             <span className="text-sm text-gray-500">km</span>
           </div>
-          <div className="flex flex-row w-full sm:w-auto gap-2 items-center mt-1 sm:mt-0">
-            <input
-              type="number"
-              min={0}
-              max={59}
-              value={displayValue(section.min)}
-              onChange={(e) =>
-                handleSectionChange(idx, "min", Number(e.target.value) || 0)
-              }
-              className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-            />
-            <span className="text-sm text-gray-500">분</span>
-            <input
-              type="number"
-              min={0}
-              max={59}
-              value={displayValue(section.sec)}
-              onChange={(e) =>
-                handleSectionChange(idx, "sec", Number(e.target.value) || 0)
-              }
-              className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-            />
-            <span className="text-sm text-gray-500">초</span>
+          {/* 분/초 입력과 삭제 버튼을 모바일에서 세로로 쌓음 */}
+          <div className="flex flex-col w-full sm:w-auto">
+            <div className="flex flex-row gap-2 items-center mt-1 sm:mt-0">
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={displayValue(section.min)}
+                onChange={(e) =>
+                  handleSectionChange(idx, "min", Number(e.target.value) || 0)
+                }
+                className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              />
+              <span className="text-sm text-gray-500">분</span>
+              <input
+                type="number"
+                min={0}
+                max={59}
+                value={displayValue(section.sec)}
+                onChange={(e) =>
+                  handleSectionChange(idx, "sec", Number(e.target.value) || 0)
+                }
+                className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              />
+              <span className="text-sm text-gray-500">초</span>
+              {/* sm 이상에서만 한 줄에 삭제 버튼 */}
+              <button
+                type="button"
+                onClick={() => handleRemoveSection(idx)}
+                className="hidden sm:block ml-0 sm:ml-2 text-xs bg-red-100 text-red-600 rounded px-2 py-1 hover:bg-red-200 transition"
+              >
+                삭제
+              </button>
+            </div>
+            {/* 모바일에서만 아래에 block으로 삭제 버튼 */}
             <button
               type="button"
               onClick={() => handleRemoveSection(idx)}
-              className="w-full sm:w-auto ml-0 sm:ml-2 text-xs bg-red-100 text-red-600 rounded px-2 py-1 hover:bg-red-200 transition"
+              className="block sm:hidden w-full mt-2 text-xs bg-red-100 text-red-600 rounded px-2 py-1 hover:bg-red-200 transition"
             >
               삭제
             </button>
