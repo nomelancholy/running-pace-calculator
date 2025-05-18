@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Running Pace Calculator
+
+이 프로젝트는 Next.js (TypeScript)와 Tailwind CSS로 구성된 러닝 페이스 계산기입니다.
+
+## 주요 스택
+
+- Next.js (App Router, TypeScript)
+- Tailwind CSS
 
 ## Getting Started
 
