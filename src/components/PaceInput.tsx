@@ -49,6 +49,9 @@ export default function PaceInput({
     onChange(sections.filter((_, i) => i !== idx));
   };
 
+  // 입력값이 0일 때 빈 문자열로 표시
+  const displayValue = (v: number) => (v === 0 ? "" : String(v));
+
   return (
     <div className="space-y-3 mb-4">
       {sections.map((section, idx) => (
@@ -61,9 +64,9 @@ export default function PaceInput({
             type="number"
             min={0}
             max={totalDistance}
-            value={section.from}
+            value={displayValue(section.from)}
             onChange={(e) =>
-              handleSectionChange(idx, "from", Number(e.target.value))
+              handleSectionChange(idx, "from", Number(e.target.value) || 0)
             }
             className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
@@ -72,9 +75,9 @@ export default function PaceInput({
             type="number"
             min={section.from}
             max={totalDistance}
-            value={section.to}
+            value={displayValue(section.to)}
             onChange={(e) =>
-              handleSectionChange(idx, "to", Number(e.target.value))
+              handleSectionChange(idx, "to", Number(e.target.value) || 0)
             }
             className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
@@ -83,9 +86,9 @@ export default function PaceInput({
             type="number"
             min={0}
             max={59}
-            value={section.min}
+            value={displayValue(section.min)}
             onChange={(e) =>
-              handleSectionChange(idx, "min", Number(e.target.value))
+              handleSectionChange(idx, "min", Number(e.target.value) || 0)
             }
             className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
@@ -94,9 +97,9 @@ export default function PaceInput({
             type="number"
             min={0}
             max={59}
-            value={section.sec}
+            value={displayValue(section.sec)}
             onChange={(e) =>
-              handleSectionChange(idx, "sec", Number(e.target.value))
+              handleSectionChange(idx, "sec", Number(e.target.value) || 0)
             }
             className="w-full sm:w-16 border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
           />
