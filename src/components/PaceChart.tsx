@@ -26,6 +26,13 @@ function getMinMaxPace(
       : paceToSeconds(defaultPace.min, defaultPace.sec);
     paces.push(pace);
   }
+  // 마지막 거리(정확히 totalDistance)도 입력 구간에 포함되면 해당 페이스로 추가
+  const lastSection = sections.find(
+    (s) => totalDistance >= s.from && totalDistance <= s.to
+  );
+  if (lastSection) {
+    paces.push(paceToSeconds(lastSection.min, lastSection.sec));
+  }
   const min = Math.min(...paces);
   const max = Math.max(...paces);
   return { min, max };
@@ -44,19 +51,27 @@ export default function PaceChart({
 }: PaceChartProps) {
   // 0.5km 단위로 데이터 생성
   const points: { x: number; y: number }[] = [];
-  for (let km = 0; km <= totalDistance; km += 0.5) {
+  for (let km = 0; km < totalDistance; km += 0.5) {
     const section = sections.find((s) => km >= s.from && km < s.to);
     const pace = section
       ? paceToSeconds(section.min, section.sec)
       : paceToSeconds(defaultPace.min, defaultPace.sec);
     points.push({ x: Number(km.toFixed(2)), y: pace });
   }
+  // 마지막 거리(정확히 totalDistance)도 입력 구간에 포함되면 해당 페이스로 추가
+  const lastSection = sections.find(
+    (s) => totalDistance > s.from && totalDistance <= s.to
+  );
+  const lastPace = lastSection
+    ? paceToSeconds(lastSection.min, lastSection.sec)
+    : paceToSeconds(defaultPace.min, defaultPace.sec);
+  points.push({ x: Number(totalDistance.toFixed(2)), y: lastPace });
 
   // min/max pace 계산 (초)
   const { min, max } = getMinMaxPace(sections, defaultPace, totalDistance);
-  // 1분씩 여유, 10초 단위로 라운딩
-  const yMin = Math.floor((min - 60) / 10) * 10;
-  const yMax = Math.ceil((max + 60) / 10) * 10;
+  // 30초씩 여유, 10초 단위로 라운딩
+  const yMin = Math.floor((min - 30) / 10) * 10;
+  const yMax = Math.ceil((max + 30) / 10) * 10;
   // y축 tick 값 생성 (10초 단위)
   const ticks: number[] = [];
   for (let t = yMin; t <= yMax; t += 10) {
