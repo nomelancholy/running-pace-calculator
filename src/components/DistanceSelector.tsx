@@ -9,7 +9,7 @@ const DISTANCES: DistanceOption[] = [
   { label: "5km", value: 5 },
   { label: "10km", value: 10 },
   { label: "Half (21km)", value: 21 },
-  { label: "Full (42.195km)", value: 42.195 },
+  { label: "Full (42km)", value: 42 },
 ];
 
 interface DistanceSelectorProps {
