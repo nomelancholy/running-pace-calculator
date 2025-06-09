@@ -26,7 +26,7 @@ function getMinMaxPace(
       : paceToSeconds(defaultPace.min, defaultPace.sec);
     paces.push(pace);
   }
-  // 마지막 거리(정확히 totalDistance)도 입력 구간에 포함되면 해당 페이스로 추가
+  // 마지막 거리(정확히 totalDistance)도 입력 구간에 포함되면 해당 페이스로 추가함
   const lastSection = sections.find(
     (s) => totalDistance >= s.from && totalDistance <= s.to
   );
